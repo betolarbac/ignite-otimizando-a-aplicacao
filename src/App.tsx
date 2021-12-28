@@ -9,6 +9,8 @@ import './styles/global.scss';
 
 import './styles/sidebar.scss';
 import './styles/content.scss';
+import { useCallback } from 'react';
+import { useMemo } from 'react';
 
 interface GenreResponseProps {
   id: number;
@@ -28,7 +30,7 @@ interface MovieProps {
 }
 
 export function App() {
-  const [selectedGenreId, setSelectedGenreId] = useState(1);
+  const [selectedGenreId, setSelectedGenreId] = useState('1');
 
   const [genres, setGenres] = useState<GenreResponseProps[]>([]);
 
@@ -51,14 +53,21 @@ export function App() {
     })
   }, [selectedGenreId]);
 
-  function handleClickButton(id: number) {
+  const parseGenres = useMemo(() => {
+    return genres.map(genre => ({
+      ...genre,
+      id: String(genre.id),
+    }))
+  }, [genres])
+
+  const handleClickButton = useCallback((id: string) => {
     setSelectedGenreId(id);
-  }
+  }, [setSelectedGenreId])
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
       <SideBar
-        genres={genres}
+        genres={parseGenres}
         selectedGenreId={selectedGenreId}
         buttonClickCallback={handleClickButton}
       />

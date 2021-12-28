@@ -2,12 +2,12 @@ import { Button } from "./Button";
 
 interface SideBarProps {
   genres: Array<{
-    id: number;
+    id: string;
     name: 'action' | 'comedy' | 'documentary' | 'drama' | 'horror' | 'family';
     title: string;
   }>;
-  selectedGenreId: number;
-  buttonClickCallback: (args: any) => void;
+  selectedGenreId: string;
+  buttonClickCallback: (id: string) => void;
 }
 
 export function SideBar({
@@ -22,7 +22,7 @@ export function SideBar({
       <div className="buttons-container">
         {genres.map(genre => (
           <Button
-            key={String(genre.id)}
+            key={genre.id}
             title={genre.title}
             iconName={genre.name}
             onClick={() => buttonClickCallback(genre.id)}
